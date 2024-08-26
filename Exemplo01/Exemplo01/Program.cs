@@ -62,6 +62,8 @@ namespace Exemplo01
 
     public class Inss
     {
+        private const decimal DESCONTO_TETO = 908.85m;
+
         public Inss()
         {
             Faixas = new List<INSSFaixa>
@@ -78,6 +80,11 @@ namespace Exemplo01
         //Calcular o desconto por faixa
         public decimal CalcularDesconto(decimal salario)
         {
+            if (salario > Faixas.Last().Teto)
+            {
+                return DESCONTO_TETO;
+            }
+
             var descontos = new List<decimal>();
 
             foreach (var item in Faixas)
