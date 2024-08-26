@@ -30,6 +30,28 @@
         public decimal Teto { get; set; }
         public decimal Aliquota { get; set; }
 
+        public bool ContemValor(decimal valor)
+        {
+            return valor >= Piso && valor <= Teto;
+        }
+
+        public decimal ObterValorFaixa(decimal salario)
+        {
+            //Verificamos se é a primeira faixa, 
+            //caso não seja, subtraímos o valor da faixa anterior
+            //que sempre será R$0,01 menor que o piso da faixa atual
+            var valorFaixaAnterior = Aliquota > 7.5m ? Piso - 0.01m : Piso;
+
+            //caso o salário seja maior 
+            // que o teto da faixa,
+            // retornamos apenas o intervalo da faixa
+            if (salario > Teto)
+            {
+                return Teto - valorFaixaAnterior;
+            }
+
+            return salario - valorFaixaAnterior;
+        }
     }
 
 
@@ -37,12 +59,12 @@
     {
         public Inss()
         {
-              Faixas = new List<INSSFaixa>
+            Faixas = new List<INSSFaixa>
               {
                   new INSSFaixa { Piso = 0, Teto = 1412, Aliquota = 7.5m },
-                  new INSSFaixa { Piso = 1412.01m, Teto = 2666.68m, Aliquota = 9 },
-                  new INSSFaixa { Piso = 2666.69m, Teto = 4000.03m, Aliquota = 12 },
-                  new INSSFaixa { Piso = 4000.04m, Teto = 7786.02m, Aliquota = 14 }
+                  new INSSFaixa { Piso = 1412.01m, Teto = 2666.68m, Aliquota = 9m },
+                  new INSSFaixa { Piso = 2666.69m, Teto = 4000.03m, Aliquota = 12m },
+                  new INSSFaixa { Piso = 4000.04m, Teto = 7786.02m, Aliquota = 14m }
               };
         }
 
@@ -51,22 +73,22 @@
         //Calcular o desconto por faixa
         public decimal CalcularDesconto(decimal salario)
         {
-            var desconto = 0m;
+            var descontos = new List<decimal>();
 
             foreach (var item in Faixas)
             {
-                if (salario >= item.Piso && salario <= item.Teto)
+                if (item.ContemValor(salario))
                 {
                     //Somar os descontos de cada faixa
-                    desconto = salario * item.Aliquota / 100;
-                    return desconto;
+                    var desconto = salario * item.Aliquota / 100;
+                    descontos.Add(desconto);
                 }
-
+                else
+                {
+                    break;
+                }
             }
-            return 0;
+            return descontos.Sum();
         }
-
-        
-        
     }
 }
