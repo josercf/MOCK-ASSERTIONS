@@ -23,6 +23,7 @@
         De 4.000,04 até 7.786,02    14%
      */
 
+    //Armazenar as faixas de desconto do INSS
     public class INSSFaixa
     {
         public decimal Piso { get; set; }
@@ -30,41 +31,41 @@
         public decimal Aliquota { get; set; }
     }
 
-    public interface IINSSImposto
-    {
-        INSSFaixa BuscarFaixa(decimal salario);
-    }
 
-    public class INSSV1 : IINSSImposto
+    public class Inss
     {
-        public INSSV1()
+        public Inss()
         {
-            tabela = new List<INSSFaixa>
-            {
-                new INSSFaixa { Piso = 0, Teto = 1412, Aliquota = 7.5m },
-                new INSSFaixa { Piso = 1412.01m, Teto = 2666.68m, Aliquota = 9m },
-                new INSSFaixa { Piso = 2666.69m, Teto = 4000.03m, Aliquota = 12m },
-                new INSSFaixa { Piso = 4000.04m, Teto = 7786.02m, Aliquota = 14m }
-            };
+              Faixas = new List<INSSFaixa>
+              {
+                  new INSSFaixa { Piso = 0, Teto = 1412, Aliquota = 7.5m },
+                  new INSSFaixa { Piso = 1412.01m, Teto = 2666.68m, Aliquota = 9 },
+                  new INSSFaixa { Piso = 2666.69m, Teto = 4000.03m, Aliquota = 12 },
+                  new INSSFaixa { Piso = 4000.04m, Teto = 7786.02m, Aliquota = 14 }
+              };
         }
 
-        private IReadOnlyCollection<INSSFaixa> tabela;
+        public List<INSSFaixa> Faixas { get; set; }
 
-        public INSSFaixa BuscarFaixa(decimal salario)
+        //Calcular o desconto por faixa
+        public decimal CalcularDesconto(decimal salario)
         {
-            foreach (var faixa in tabela)
+            var desconto = 0m;
+
+            foreach (var item in Faixas)
             {
-                if (salario >= faixa.Piso && salario <= faixa.Teto)
+                if (salario >= item.Piso && salario <= item.Teto)
                 {
-                    return faixa;
+                    //Somar os descontos de cada faixa
+                    desconto = salario * item.Aliquota / 100;
+                    return desconto;
                 }
+
             }
-
-            return null;
+            return 0;
         }
+
+        
+        
     }
-
-
-
-
 }
