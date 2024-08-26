@@ -29,6 +29,7 @@
         public decimal Piso { get; set; }
         public decimal Teto { get; set; }
         public decimal Aliquota { get; set; }
+
     }
 
 
