@@ -8,10 +8,10 @@
         {
             Faixas = new List<INSSFaixa>
               {
-                  new INSSFaixa { Piso = 0, Teto = 1412, Aliquota = 7.5m },
-                  new INSSFaixa { Piso = 1412.01m, Teto = 2666.68m, Aliquota = 9m },
-                  new INSSFaixa { Piso = 2666.69m, Teto = 4000.03m, Aliquota = 12m },
-                  new INSSFaixa { Piso = 4000.04m, Teto = 7786.02m, Aliquota = 14m }
+                  new INSSFaixa(0,1412, 7.5m ),
+                  new INSSFaixa(1412.01m, 2666.68m, 9m ),
+                  new INSSFaixa(2666.69m, 4000.03m, 12m ),
+                  new INSSFaixa(4000.04m, 7786.02m, 14m )
               };
         }
 

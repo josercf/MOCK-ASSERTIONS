@@ -17,9 +17,16 @@
     //Armazenar as faixas de desconto do INSS
     public class INSSFaixa
     {
-        public decimal Piso { get; set; }
-        public decimal Teto { get; set; }
-        public decimal Aliquota { get; set; }
+        public INSSFaixa(decimal piso, decimal teto, decimal aliquota)
+        {
+            Piso = piso;
+            Teto = teto;
+            Aliquota = aliquota;
+        }
+
+        public decimal Piso { get; }
+        public decimal Teto { get; }
+        public decimal Aliquota { get; }
 
         public bool ContemValor(decimal valor)
         {
