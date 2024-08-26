@@ -1,4 +1,6 @@
-﻿namespace Exemplo01
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace Exemplo01
 {
     internal class Program
     {
@@ -32,7 +34,10 @@
 
         public bool ContemValor(decimal valor)
         {
-            return valor >= Piso && valor <= Teto;
+            if (valor > Teto)
+                return true;
+
+            return valor >= Piso;
         }
 
         public decimal ObterValorFaixa(decimal salario)
@@ -79,8 +84,9 @@
             {
                 if (item.ContemValor(salario))
                 {
+                    var valorEfetivoFaixa = item.ObterValorFaixa(salario);
                     //Somar os descontos de cada faixa
-                    var desconto = salario * item.Aliquota / 100;
+                    var desconto = valorEfetivoFaixa * item.Aliquota / 100;
                     descontos.Add(desconto);
                 }
                 else

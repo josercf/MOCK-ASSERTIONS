@@ -14,7 +14,8 @@ namespace Exemplo1.Teste
         public static IEnumerable<object[]> DadosForaFaixa => new List<object[]>
         {
             new object[] { 900, false },
-            new object[] { 2100, false }
+            new object[] { 2100, true }  ,
+            new object[] { 2700, true }
         };
 
         [Fact]
@@ -35,8 +36,8 @@ namespace Exemplo1.Teste
         {
             var faixa = new INSSFaixa
             {
-                Piso = 1000,
-                Teto = 2000
+                Piso = 1412.01m,
+                Teto = 2666.68m
             };
 
             var result = faixa.ContemValor(valor);
@@ -73,6 +74,22 @@ namespace Exemplo1.Teste
             var result = faixa.ObterValorFaixa(2100m);
 
             const decimal expected = 688m;
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void INSS_Faixa_Deve_Obter_1254_68()
+        {
+            var faixa = new INSSFaixa
+            {
+                Piso = 1412.01m,
+                Teto = 2666.68m,
+                Aliquota = 9.0m
+            };
+
+            var result = faixa.ObterValorFaixa(2_700m);
+
+            const decimal expected = 1_254.68m;
             Assert.Equal(expected, result);
         }
     }
