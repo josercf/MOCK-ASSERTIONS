@@ -29,5 +29,17 @@ namespace Exemplo1.Teste
 
             Assert.Equal(descontoEsperado, desconto);
         }
+
+        [Fact]
+        public void Deve_Retornar_Desconto_Maximo()
+        {
+            const decimal salario = 8000.00m;
+            const decimal descontoEsperado = 908.85m;
+            var inss = new Inss();
+
+            var desconto = inss.CalcularDesconto(salario);
+
+            Assert.Equal(descontoEsperado, desconto);
+        }
     }
 }
