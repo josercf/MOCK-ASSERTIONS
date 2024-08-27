@@ -9,14 +9,23 @@ namespace Exemplo01
         private readonly decimal teto_ultima_faixa;
         private readonly ILogger<Inss> logger;
 
+        /// <summary>
+        /// Inicializa uma nova instância da classe <see cref="Inss"/> com um logger e uma lista de faixas do INSS.
+        /// </summary>
+        /// <param name="logger">Logger para registrar informações.</param>
+        /// <param name="faixaList">Lista de faixas do INSS.</param>
         public Inss(ILogger<Inss> logger, IEnumerable<INSSFaixa> faixaList)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            if (!faixaList.Any())
+                throw new ArgumentException("A lista de faixas não pode estar vazia.", nameof(faixaList));
+
             this.logger = logger;
             faixas = faixaList.ToList().AsReadOnly();
             teto_ultima_faixa = faixas.Last().Teto;
         }
 
-        //Calcular o desconto por faixa
+
         public decimal CalcularDesconto(decimal salario)
         {
             if (salario > teto_ultima_faixa)
