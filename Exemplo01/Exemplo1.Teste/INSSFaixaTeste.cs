@@ -21,11 +21,7 @@ namespace Exemplo1.Teste
         [Fact]
         public void INSS_Faixa_Deve_Conter_Valor()
         {
-            var faixa = new INSSFaixa
-            {
-                Piso = 1000,
-                Teto = 2000
-            };
+            var faixa = new INSSFaixa(1000, 2000, 14m);
 
             Assert.True(faixa.ContemValor(1500));
         }
@@ -34,11 +30,7 @@ namespace Exemplo1.Teste
         [MemberData(nameof(DadosForaFaixa))]
         public void INSS_Faixa_Nao_Deve_Conter_Valor(int valor, bool expected)
         {
-            var faixa = new INSSFaixa
-            {
-                Piso = 1412.01m,
-                Teto = 2666.68m
-            };
+            var faixa = new INSSFaixa(1412.01m, 2666.68m, 14m);
 
             var result = faixa.ContemValor(valor);
 
@@ -48,12 +40,7 @@ namespace Exemplo1.Teste
         [Fact]
         public void INSS_Faixa_Deve_Obter_1412()
         {
-            var faixa = new INSSFaixa
-            {
-                Piso = 0,
-                Teto = 1412m,
-                Aliquota = 7.5m
-            };
+            var faixa = new INSSFaixa(0, 1412.01m, 7.5m);
 
             var result = faixa.ObterValorFaixa(1412m);
 
@@ -64,12 +51,7 @@ namespace Exemplo1.Teste
         [Fact]
         public void INSS_Faixa_Deve_Obter_688()
         {
-            var faixa = new INSSFaixa
-            {
-                Piso = 1412.01m,
-                Teto = 2666.68m,
-                Aliquota = 9.0m
-            };
+            var faixa = new INSSFaixa(1412.01m, 2666.68m, 9m);
 
             var result = faixa.ObterValorFaixa(2100m);
 
@@ -80,13 +62,8 @@ namespace Exemplo1.Teste
         [Fact]
         public void INSS_Faixa_Deve_Obter_1254_68()
         {
-            var faixa = new INSSFaixa
-            {
-                Piso = 1412.01m,
-                Teto = 2666.68m,
-                Aliquota = 9.0m
-            };
-
+            var faixa = new INSSFaixa(1412.01m, 2666.68m, 9m);
+           
             var result = faixa.ObterValorFaixa(2_700m);
 
             const decimal expected = 1_254.68m;
