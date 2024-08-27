@@ -1,13 +1,28 @@
 ﻿using Exemplo01;
 
+using Microsoft.Extensions.Logging;
+
+using Moq;
+
 namespace Exemplo1.Teste
 {
     public class InssTeste
     {
+        IEnumerable<INSSFaixa> faixas = new List<INSSFaixa>
+              {
+                  new INSSFaixa(0,1412, 7.5m ),
+                  new INSSFaixa(1412.01m, 2666.68m, 9m ),
+                  new INSSFaixa(2666.69m, 4000.03m, 12m ),
+                  new INSSFaixa(4000.04m, 7786.02m, 14m )
+              };
+
+        ILogger<Inss> logger = new Mock<ILogger<Inss>>().Object;
+
+
         [Fact]
         public void Calcular_Desconto_Faixa1()
         {
-            var inss = new Inss();
+            var inss = new Inss(logger, faixas);
 
             //1412.00 - 7.5% = 105.9
             var desconto = inss.CalcularDesconto(1412);
@@ -20,7 +35,7 @@ namespace Exemplo1.Teste
         {
             const decimal salario = 2100.00m;
             const decimal descontoEsperado = 167.82m;
-            var inss = new Inss();
+            var inss = new Inss(logger, faixas);
 
             //1412.00 * 7.5% = 105.9
             //[2100.00 - 1412] * 0,09 = 688,00 * 0,09 = 61,92
@@ -35,7 +50,7 @@ namespace Exemplo1.Teste
         {
             const decimal salario = 8000.00m;
             const decimal descontoEsperado = 908.85m;
-            var inss = new Inss();
+            var inss = new Inss(logger, faixas);
 
             var desconto = inss.CalcularDesconto(salario);
 
@@ -47,7 +62,7 @@ namespace Exemplo1.Teste
         {
             const decimal salario = 3000.00m;
             const decimal descontoEsperado = 258.82m;
-            var inss = new Inss();
+            var inss = new Inss(logger, faixas);
 
             var desconto = inss.CalcularDesconto(salario);
 
