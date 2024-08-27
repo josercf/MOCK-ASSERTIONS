@@ -6,7 +6,7 @@ namespace Exemplo01
     {
         private const decimal DESCONTO_TETO = 908.85m;
         private readonly IReadOnlyCollection<INSSFaixa> faixas;
-        private readonly decimal teto_ultima_faixa;
+        private readonly decimal tetoUltimaFaixa;
         private readonly ILogger<Inss> logger;
 
         /// <summary>
@@ -20,15 +20,22 @@ namespace Exemplo01
             if (!faixaList.Any())
                 throw new ArgumentException("A lista de faixas não pode estar vazia.", nameof(faixaList));
 
-            this.logger = logger;
             faixas = faixaList.ToList().AsReadOnly();
-            teto_ultima_faixa = faixas.Last().Teto;
+            tetoUltimaFaixa = faixas.Last().Teto;
         }
 
 
+        /// <summary>
+        /// Calcula o desconto do INSS baseado no salário fornecido.
+        /// </summary>
+        /// <param name="salario">Salário para cálculo do desconto.</param>
+        /// <returns>O valor do desconto do INSS.</returns>
         public decimal CalcularDesconto(decimal salario)
         {
-            if (salario > teto_ultima_faixa)
+            if (salario <= 0)
+                throw new ArgumentException("O salário deve ser maior que zero.", nameof(salario));
+
+            if (salario > tetoUltimaFaixa)
             {
                 logger.LogInformation("Salário maior que o teto da última faixa. Desconto: {DESCONTO_TETO}", DESCONTO_TETO);
                 return DESCONTO_TETO;

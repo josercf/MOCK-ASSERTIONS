@@ -68,5 +68,19 @@ namespace Exemplo1.Teste
 
             Assert.Equal(descontoEsperado, desconto);
         }
+
+        [Fact]
+        public void CalcularDesconto_SalarioZero_DeveLancarArgumentException()
+        {
+            decimal salarioInvalido = 0;
+
+            var inss = new Inss(logger, faixas);
+
+            var exception = Assert.Throws<ArgumentException>(() => inss.CalcularDesconto(salarioInvalido));
+
+            // Verificar se a mensagem de exceção está correta
+            Assert.Equal("O salário deve ser maior que zero. (Parameter 'salario')", exception.Message);
+            Assert.Equal("salario", exception.ParamName);
+        }
     }
 }
